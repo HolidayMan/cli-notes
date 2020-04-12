@@ -75,7 +75,7 @@ class AddNoteCommand(BaseCommand):
         for line in self._get_body_lines():
             note_builder.add_body_line(line)
 
-        note_builder.save()
+        note_builder.to_note()
         print("Note has been successfully added")
 
     def on_fail(self, *args):

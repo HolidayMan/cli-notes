@@ -6,7 +6,7 @@ class Note:
     title = None
     body = None
 
-    def __init__(self, title, body, save=True):
+    def __init__(self, title, body):
         saver = NotesSaver()
         if len(saver.notes.keys()) > 0:
             note_number = max(saver.notes.keys()) + 1
@@ -15,8 +15,7 @@ class Note:
         self.id = note_number
         self.title = title
         self.body = body
-        if save:
-            saver.add_note(self)
+        self.save()
 
     def prettify(self):
         text = self.title.title() + "\n"
@@ -29,21 +28,22 @@ class Note:
 
 
 class NoteBuilder:
-    def __init__(self, title='', body=''):
-        self._note = Note(title, body, save=False)
+    _note = None
+
+    def __init__(self):
+        self.title = ''
+        self.body = ''
 
     def set_title(self, title):
-        self._note.title = title
+        self.title = title
 
     def add_body_line(self, line):
         line = line.strip()
-        self._note.body += line + '\n'
+        self.body += line + '\n'
 
     def to_note(self):
-        return self._note
-
-    def save(self):
-        self._note.save()
+        if not self._note:
+            self._note = Note(self.title, self.body)
         return self._note
 
 
